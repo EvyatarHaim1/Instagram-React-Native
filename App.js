@@ -6,32 +6,29 @@ import Landing from './components/auth/Landing';
 import Register from './components/auth/Register';
 import { auth } from './firebase';
 import { View, Text } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from './redux/reducers';
+import thunk from 'redux-thunk'; 
+import Main from './components/Main';
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
 export default function App() {
 
-  const [loaded, setLoaded ] = useState(true);
   const [loggedIn, setLoggedIn ] = useState(false);
 
   useEffect(() => {
-    auth.onAuthStateChanged(( user ) =>{
-      if(!user){
-        setLoggedIn(false)
-        setLoaded(true)
-      }else{
+    auth.onAuthStateChanged(( user ) => {
+      if(user){
         setLoggedIn(true)
-        setLoaded(false)
+        console.log(user)
       }
+   
     })
   },[])
 
-  if(!loaded ){
-    return (
-      <View style={{ flex:1, justifyContent: 'center'}}>
-        <Text> Loading </Text>
-      </View>
-    )
-  }
   if(!loggedIn){
     return (
       <NavigationContainer>
@@ -50,9 +47,9 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex:1, justifyContent: 'center'}}>
-      <Text> User Is Logged In </Text>
-    </View>
+    <Provider store={store}>
+        <Main />
+    </Provider>
   )
 }
 
