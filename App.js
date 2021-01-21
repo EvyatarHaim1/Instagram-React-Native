@@ -1,18 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Landing from './components/auth/Landing';
 import Register from './components/auth/Register';
 import { auth } from './firebase';
-import { View, Text } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './redux/reducers';
-import thunk from 'redux-thunk'; 
 import Main from './components/Main';
-
-const store = createStore(rootReducer, applyMiddleware(thunk))
+import store from './redux/store/index';
 
 const Stack = createStackNavigator();
 export default function App() {
@@ -23,9 +17,8 @@ export default function App() {
     auth.onAuthStateChanged(( user ) => {
       if(user){
         setLoggedIn(true)
-        console.log(user)
       }
-   
+    
     })
   },[])
 

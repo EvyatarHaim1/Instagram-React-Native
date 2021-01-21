@@ -1,19 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native'
-import { useEffect } from 'react/cjs/react.development'
-import { connect } from 'react-redux';
-import { bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import { fetchUser } from '../redux/actions/index';
+import { connect } from 'react-redux';
 
- function Main() {
+ function Main(props) {
 
     useEffect(() => {
-        fetchUser();
+        props.fetchUser();
     },[])
+
+    const { currentUser } = props;
 
     return (
         <View style={{ flex:1, justifyContent: 'center'}}>
-            <Text> User Is Logged In </Text>
+            <Text> {currentUser?.name} User Is Logged In </Text>
        </View>
     )
 }
@@ -22,6 +23,6 @@ const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
 
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, dispatch});
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch);
 
-export default (connect)(mapStateToProps, mapDispatchProps)(Main);
+export default connect(mapStateToProps, mapDispatchProps)(Main);
