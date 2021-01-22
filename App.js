@@ -6,6 +6,7 @@ import Register from './components/auth/Register';
 import { auth } from './firebase';
 import { Provider } from 'react-redux';
 import Main from './components/Main';
+import Add from './components/main/Add';
 import store from './redux/store/index';
 
 const Stack = createStackNavigator();
@@ -26,14 +27,8 @@ export default function App() {
     return (
       <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
-              <Stack.Screen name="Landing" 
-                            component={Landing}
-                            options={{ headerShown: false }}
-              />
-              <Stack.Screen name="Register" 
-                            component={Register}
-                            options={{ headerShown: false }}
-              />
+              <Stack.Screen name="Landing" component={Landing}options={{ headerShown: false }}/>
+              <Stack.Screen name="Register" component={Register}options={{ headerShown: false }}/>
           </Stack.Navigator>
       </NavigationContainer>
     );
@@ -41,7 +36,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-        <Main />
+      <NavigationContainer>
+       <Stack.Navigator initialRouteName="Main">
+              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }}/>
+              <Stack.Screen name="Add" component={Add} />
+
+          </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   )
 }
